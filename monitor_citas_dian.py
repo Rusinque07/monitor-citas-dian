@@ -51,12 +51,13 @@ UA = (
 def enviar_telegram(texto: str):
     if not (TG_TOKEN and TG_CHAT):
         return
-    r = requests.post(
-        f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
-        data={"chat_id": TG_CHAT, "text": texto},
-        timeout=30,
-    )
-    print("Telegram respondió:", r.status_code, r.text[:200])
+    for chat in TG_CHAT.split(","):
+        r = requests.post(
+            f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
+            data={"chat_id": chat.strip(), "text": texto},
+            timeout=30,
+        )
+        print("Telegram respondió:", chat.strip(), r.status_code, r.text[:200])
 
 
 def enviar_gmail(texto: str):
